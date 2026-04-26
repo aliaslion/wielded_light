@@ -133,6 +133,9 @@ end
 
 -- Add light to active light list and mark position for update
 local function add_light(pos, id, light_level)
+	-- The nodedef might contain floating-point numbers --> round up.
+	light_level = math.floor(light_level + 0.5)
+
 	if not active_lights[pos] then
 		active_lights[pos] = {}
 	end
@@ -277,7 +280,6 @@ local function recalc_light(pos)
 		return
 	end
 
-	-- Limit the light level
 	max_light = math.min(max_light, minetest.LIGHT_MAX)
 
 	-- Get the current light level in this position
